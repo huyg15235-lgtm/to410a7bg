@@ -305,7 +305,7 @@ draw();
 const lines=[
  "Xin chào. Tôi là AI điều phối Tổ 4.",
  "Đang khởi tạo hệ thống lớp 10A7...",
- "Truy cập thành công. Chào mừng bạn."
+ "Truy cập thành công. Chào mừng thầy cô và các bạn!."
 ];
 let i=0,j=0;
 (function speak(){
@@ -375,31 +375,31 @@ updateRanking();
 
 function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
 </script>
-/* ===== AI SEARCH ===== */
-function aiSearch(){
-  const q = searchInput.value.toLowerCase();
-  const members = document.querySelectorAll(".member");
-  let found = 0;
-
-  members.forEach(m=>{
-    const text = m.innerText.toLowerCase();
-    if(text.includes(q)){
-      m.style.display="block";
-      found++;
-    }else{
-      m.style.display="none";
-    }
-  });
-
-  if(q===""){
-    members.forEach(m=>m.style.display="block");
-    aiResult.innerText="";
-  }else{
-    aiResult.innerText = found
-      ? `AI phát hiện ${found} kết quả phù hợp`
-      : "AI không tìm thấy thành viên phù hợp";
-  }
-}
+<section id="ai-search">
+  <div class="reveal" style="max-width:700px;margin:auto;text-align:center">
+    <h2 style="font-family:Orbitron;color:var(--neon2);font-size:36px">
+      AI TÌM KIẾM THÀNH VIÊN
+    </h2>
+    <p style="color:var(--muted);margin:12px 0 20px">
+      Nhập tên hoặc đặc điểm để AI gợi ý
+    </p>
+    <input
+      id="searchInput"
+      placeholder="Ví dụ: Doanh, sáng tạo, kỷ luật..."
+      style="
+        width:100%;
+        padding:14px 20px;
+        border-radius:30px;
+        border:1px solid var(--border);
+        background:var(--glass);
+        color:var(--text);
+        outline:none;
+      "
+      oninput="aiSearch()"
+    >
+    <div id="aiResult" style="margin-top:20px;color:var(--neon2)"></div>
+  </div>
+</section>
 
 </body>
 </html>
