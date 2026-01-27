@@ -266,7 +266,7 @@ footer{text-align:center;padding:30px;color:var(--muted)}
     <div class="member" onclick="openModal('Hoàng Đức Lương','Thành viên','Kỷ luật','Ổn định')"><div class="avatar"></div><strong>Hoàng Đức Lương</strong><span>Thành viên</span></div>
     <div class="member" onclick="openModal('Lâm Nguyễn Huyền Trang','Thành viên','Hòa đồng','Giao tiếp tốt')"><div class="avatar"></div><strong>Lâm Nguyễn Huyền Trang</strong><span>Thành viên</span></div>
     <div class="member" onclick="openModal('Lăng Thị Thu Hiếu','Thành viên','Tinh thần tốt','Hợp tác')"><div class="avatar"></div><strong>Lăng Thị Thu Hiếu</strong><span>Thành viên</span></div>
-    <div class="member" onclick="openModal('Dương Lan Hương','Thành viên','Tinh thần tốt','Hợp tác')"><div class="avatar"></div><strong>Lăng Thị Thu Hiếu</strong><span>Thành viên</span></div>
+    <div class="member" onclick="openModal('Dương Thị Lan Hương','Thành viên','Tinh thần tốt','Hợp tác')"><div class="avatar"></div><strong>Dương Thị Lan Hương</strong><span>Thành viên</span></div>
 </div>
 </section>
 
@@ -287,34 +287,39 @@ footer{text-align:center;padding:30px;color:var(--muted)}
 let memberPriority = JSON.parse(localStorage.getItem("memberPriority")) || {};
 
 /* ===== STARS ===== */
-const c=document.getElementById('stars'),ctx=c.getContext('2d');
-function resize(){c.width=innerWidth;c.height=innerHeight}
-resize();addEventListener('resize',resize);
-let stars=Array.from({length:260},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.4}));
-function draw(){
+const c = document.getElementById('stars');
+const ctx = c.getContext('2d');
+function resize(){ c.width = innerWidth; c.height = innerHeight }
+resize(); addEventListener('resize', resize);
+
+let stars = Array.from({length:260},()=>({
+  x:Math.random()*c.width,
+  y:Math.random()*c.height,
+  r:Math.random()*1.4
+}));
+(function draw(){
   ctx.clearRect(0,0,c.width,c.height);
   ctx.fillStyle='#7dd3ff';
   stars.forEach(s=>{
-    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fill();
-    s.y+=0.3;if(s.y>c.height)s.y=0;
+    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,7); ctx.fill();
+    s.y+=0.3; if(s.y>c.height) s.y=0;
   });
   requestAnimationFrame(draw);
-}
-draw();
+})();
 
 /* ===== INTRO ===== */
 const lines=[
  "Xin chào. Tôi là AI điều phối Tổ 4.",
  "Đang khởi tạo hệ thống lớp 10A7...",
- "Truy cập thành công. Chào mừng thầy cô và các bạn!."
+ "Truy cập thành công. Chào mừng thầy cô và các bạn!"
 ];
 let i=0,j=0;
 (function speak(){
   if(i<lines.length){
     if(j<lines[i].length){
-      robotTalk.innerHTML+=lines[i][j++];setTimeout(speak,45);
+      robotTalk.innerHTML+=lines[i][j++]; setTimeout(speak,45);
     }else{
-      robotTalk.innerHTML+="<br>";j=0;i++;setTimeout(speak,600);
+      robotTalk.innerHTML+="<br>"; j=0; i++; setTimeout(speak,600);
     }
   }else setTimeout(()=>intro.classList.add('hidden'),1000);
 })();
@@ -332,10 +337,13 @@ let index=0,del=false;
 
 /* ===== REVEAL ===== */
 const reveals=document.querySelectorAll('.reveal');
-addEventListener('scroll',()=>reveals.forEach(r=>{
-  if(r.getBoundingClientRect().top<innerHeight-120) r.classList.add('active');
-}));
-<script>
+addEventListener('scroll',()=>{
+  reveals.forEach(r=>{
+    if(r.getBoundingClientRect().top<innerHeight-120)
+      r.classList.add('active');
+  });
+});
+
 /* ===== MODAL + AI RANK ===== */
 function openModal(n,r,a,d){
   modal.style.display='flex';
@@ -364,20 +372,21 @@ function updateRanking(){
     if(i===0) m.classList.add("top1-glow");
     m.appendChild(badge);
   });
-  members.forEach(m=>{
-    if(m.dataset.score>=5){
-      const star=document.createElement("div");
-      star.className="rank-badge star";
-      star.innerText="⭐ NỔI BẬT";
-      m.appendChild(star);
-    }
-  });
 }
 updateRanking();
+
+/* ===== AI SUGGEST ===== */
+function aiSuggest(){
+  const members=[...document.querySelectorAll(".member")];
+  members.forEach(m=>m.style.display="none");
+  const pick=members[Math.floor(Math.random()*members.length)];
+  pick.style.display="block";
+  pick.scrollIntoView({behavior:"smooth",block:"center"});
+  document.getElementById("aiResult").innerText =
+    "AI đề xuất: " + pick.querySelector("strong").innerText;
+}
 
 function go(id){
   document.getElementById(id).scrollIntoView({behavior:'smooth'});
 }
-
 </script>
-
