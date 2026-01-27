@@ -212,6 +212,48 @@ footer{text-align:center;padding:30px;color:var(--muted)}
     </div>
   </div>
 </section>
+<section id="about">
+  <div class="reveal" style="max-width:900px;margin:auto;text-align:center">
+    <h2 style="font-family:Orbitron;color:var(--neon);font-size:40px">
+      GIỚI THIỆU TỔ 4
+    </h2>
+    <p style="margin-top:20px;color:var(--muted);font-size:1.05rem;line-height:1.8">
+      Tổ 4 – lớp 10A7 là một tập thể học sinh năng động, kỷ luật và có tinh thần học tập nghiêm túc.
+      Chúng tôi vận hành theo mô hình <strong>AI – công nghệ – tư duy hiện đại</strong>,
+      đề cao trách nhiệm cá nhân, hợp tác tập thể và sáng tạo trong học tập.
+    </p>
+    <p style="margin-top:14px;color:var(--muted)">
+      Mỗi thành viên là một mắt xích quan trọng – cùng nhau xây dựng một tập thể vững mạnh,
+      tiến bộ và không ngừng tỏa sáng.
+    </p>
+  </div>
+</section>
+<section id="ai-search">
+  <div class="reveal" style="max-width:700px;margin:auto;text-align:center">
+    <h2 style="font-family:Orbitron;color:var(--neon2);font-size:36px">
+      AI TÌM KIẾM THÀNH VIÊN
+    </h2>
+    <p style="color:var(--muted);margin:12px 0 20px">
+      Nhập tên hoặc đặc điểm để AI gợi ý thành viên phù hợp
+    </p>
+    <input 
+      id="searchInput"
+      placeholder="Ví dụ: Doanh, sáng tạo, kỷ luật..."
+      style="
+        width:100%;
+        padding:14px 20px;
+        border-radius:30px;
+        border:1px solid var(--border);
+        background:var(--glass);
+        color:var(--text);
+        font-size:1rem;
+        outline:none;
+      "
+      oninput="aiSearch()"
+    >
+    <div id="aiResult" style="margin-top:20px;color:var(--neon2)"></div>
+  </div>
+</section>
 
 <section id="members">
   <div class="members reveal">
@@ -333,6 +375,31 @@ updateRanking();
 
 function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
 </script>
+/* ===== AI SEARCH ===== */
+function aiSearch(){
+  const q = searchInput.value.toLowerCase();
+  const members = document.querySelectorAll(".member");
+  let found = 0;
+
+  members.forEach(m=>{
+    const text = m.innerText.toLowerCase();
+    if(text.includes(q)){
+      m.style.display="block";
+      found++;
+    }else{
+      m.style.display="none";
+    }
+  });
+
+  if(q===""){
+    members.forEach(m=>m.style.display="block");
+    aiResult.innerText="";
+  }else{
+    aiResult.innerText = found
+      ? `AI phát hiện ${found} kết quả phù hợp`
+      : "AI không tìm thấy thành viên phù hợp";
+  }
+}
 
 </body>
 </html>
