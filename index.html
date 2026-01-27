@@ -375,31 +375,33 @@ updateRanking();
 
 function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
 </script>
-<section id="ai-search">
-  <div class="reveal" style="max-width:700px;margin:auto;text-align:center">
-    <h2 style="font-family:Orbitron;color:var(--neon2);font-size:36px">
-      AI TÌM KIẾM THÀNH VIÊN
-    </h2>
-    <p style="color:var(--muted);margin:12px 0 20px">
-      Nhập tên hoặc đặc điểm để AI gợi ý
-    </p>
-    <input
-      id="searchInput"
-      placeholder="Ví dụ: Doanh, sáng tạo, kỷ luật..."
-      style="
-        width:100%;
-        padding:14px 20px;
-        border-radius:30px;
-        border:1px solid var(--border);
-        background:var(--glass);
-        color:var(--text);
-        outline:none;
-      "
-      oninput="aiSearch()"
-    >
-    <div id="aiResult" style="margin-top:20px;color:var(--neon2)"></div>
-  </div>
-</section>
+  /* ===== AI SEARCH (FIXED) ===== */
+function aiSearch(){
+  const input = document.getElementById("searchInput");
+  const keyword = input.value.toLowerCase().trim();
+  const members = document.querySelectorAll(".member");
+  let count = 0;
+
+  members.forEach(m=>{
+    const content = m.innerText.toLowerCase();
+
+    if(keyword === "" || content.includes(keyword)){
+      m.style.display = "block";
+      count++;
+    }else{
+      m.style.display = "none";
+    }
+  });
+
+  const result = document.getElementById("aiResult");
+  if(keyword === ""){
+    result.innerText = "";
+  }else if(count > 0){
+    result.innerText = `AI tìm thấy ${count} thành viên phù hợp`;
+  }else{
+    result.innerText = "AI không tìm thấy kết quả phù hợp";
+  }
+}
 
 </body>
 </html>
