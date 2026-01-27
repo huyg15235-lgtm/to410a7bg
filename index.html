@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TỔ 4 – 10A7 | Trường THPT Bình Gia</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#020617;
+  --glass:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.15);
+  --neon:#4facfe;
+  --neon2:#00eaff;
+  --text:#e6f1ff;
+  --muted:#9fb3d9;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Inter,sans-serif;
+  background:#020617;
+  color:var(--text);
+  overflow-x:hidden;
+}
+canvas{position:fixed;inset:0;z-index:-1}
+
+/* ===== INTRO ===== */
+#intro{
+  position:fixed;inset:0;
+  background:radial-gradient(circle,#020617,#000);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  z-index:5000;
+}
+#intro.hidden{opacity:0;pointer-events:none;transition:1.2s}
+.core{
+  width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,#00eaff,#003b66);
+  box-shadow:0 0 120px rgba(0,234,255,.9);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{50%{transform:scale(1.12)}}
+#intro h2{
+  margin-top:24px;font-family:Orbitron;
+  color:var(--neon2);letter-spacing:3px;
+}
+#robotTalk{margin-top:16px;color:var(--muted);text-align:center;max-width:520px}
+
+/* ===== HEADER ===== */
+header{
+  position:fixed;top:0;width:100%;
+  background:rgba(2,6,23,.8);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  z-index:1000;
+}
+.header{
+  max-width:1200px;margin:auto;
+  padding:14px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.logo{
+  font-family:Orbitron;font-weight:800;
+  color:var(--neon);letter-spacing:2px;
+}
+.logo span{display:block;font-size:11px;color:var(--muted)}
+.menu button{
+  background:none;border:none;
+  color:var(--muted);margin-left:14px;
+  font-family:Orbitron;cursor:pointer;
+}
+.menu button:hover{color:var(--neon2)}
+
+/* ===== SECTION ===== */
+section{min-height:100vh;padding:140px 8% 80px}
+.reveal{opacity:0;transform:translateY(60px);transition:1s}
+.reveal.active{opacity:1;transform:none}
+
+/* ===== HOME ===== */
+#home{text-align:center}
+#home h1{
+  font-family:Orbitron;
+  font-size:clamp(44px,8vw,80px);
+  color:var(--neon);
+  text-shadow:0 0 40px rgba(79,172,254,.6);
+}
+#typingText{
+  margin-top:22px;font-size:1.2rem;
+  letter-spacing:1px;color:var(--neon2);
+  min-height:30px;text-shadow:0 0 20px rgba(0,234,255,.8);
+}
+#typingText::after{
+  content:"|";margin-left:6px;
+  animation:blink 1s infinite;
+}
+@keyframes blink{50%{opacity:0}}
+
+.stats{
+  margin-top:60px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:30px;
+}
+.stat{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:26px;
+  padding:30px;
+}
+.stat strong{
+  font-family:Orbitron;
+  font-size:32px;
+  color:var(--neon2);
+}
+
+/* ===== MEMBERS ===== */
+.members{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:30px;
+}
+.member{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:26px;
+  padding:26px;
+  text-align:center;
+  cursor:pointer;
+  transition:.4s;
+}
+.member:hover{
+  transform:translateY(-12px) scale(1.05);
+  box-shadow:0 0 60px rgba(79,172,254,.7);
+}
+.avatar{
+  width:110px;height:110px;border-radius:50%;
+  margin:0 auto 14px;
+  background:linear-gradient(135deg,#4facfe,#00eaff);
+}
+.member span{font-size:.85rem;color:var(--muted)}
+
+/* ===== AI RANK ===== */
+.rank-badge{
+  margin-top:8px;font-size:12px;
+  padding:4px 10px;border-radius:14px;
+  display:inline-block;font-family:Orbitron;
+}
+.top1{background:linear-gradient(135deg,#ffd700,#ffae00);color:#000}
+.top2{background:linear-gradient(135deg,#c0c0c0,#8f9ba8);color:#000}
+.top3{background:linear-gradient(135deg,#cd7f32,#a25a2a);color:#fff}
+.star{background:#00eaff;color:#001}
+.member.top1-glow{
+  box-shadow:0 0 120px rgba(255,215,0,.9)!important;
+  transform:scale(1.08);
+}
+
+/* ===== MODAL ===== */
+#modal{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.7);
+  display:none;align-items:center;justify-content:center;
+  z-index:3000;
+}
+#modal .box{
+  background:#020617;border:1px solid var(--border);
+  border-radius:26px;padding:40px;
+  max-width:420px;text-align:center;
+}
+#modal h3{font-family:Orbitron;color:var(--neon)}
+#modal p{color:var(--muted);margin:8px 0}
+#modal button{
+  margin-top:20px;padding:10px 20px;
+  border:none;border-radius:20px;
+  background:var(--neon);cursor:pointer;
+}
+
+footer{text-align:center;padding:30px;color:var(--muted)}
+</style>
+</head>
+
+<body>
+
+<div id="intro">
+  <div class="core"></div>
+  <h2>AI HỆ THỐNG KHỞI ĐỘNG</h2>
+  <div id="robotTalk"></div>
+</div>
+
+<canvas id="stars"></canvas>
+
+<header>
+  <div class="header">
+    <div class="logo">TỔ 4 – 10A7<span>Học tập – sáng tạo – kỷ luật</span></div>
+    <div class="menu">
+      <button onclick="go('home')">Trang chủ</button>
+      <button onclick="go('about')">Giới thiệu</button>
+      <button onclick="go('members')">Thành viên</button>
+    </div>
+  </div>
+</header>
+
+<section id="home">
+  <div class="reveal">
+    <h1>TỔ 4 – 10A7</h1>
+    <div id="typingText"></div>
+    <div class="stats">
+      <div class="stat"><strong>9</strong><br>Thành viên</div>
+      <div class="stat"><strong>1</strong><br>Tổ trưởng</div>
+      <div class="stat"><strong>∞</strong><br>Khát vọng</div>
+    </div>
+  </div>
+</section>
+
+<section id="members">
+  <div class="members reveal">
+    <div class="member" onclick="openModal('Trương Thùy Doanh','Tổ trưởng','Lãnh đạo tốt','Quyết đoán')"><div class="avatar"></div><strong>Trương Thùy Doanh</strong><span>Tổ trưởng</span></div>
+    <div class="member" onclick="openModal('Nguyễn Thị Hà Anh','Thành viên','Học tập tốt','Chăm chỉ')"><div class="avatar"></div><strong>Nguyễn Thị Hà Anh</strong><span>Thành viên</span></div>
+    <div class="member" onclick="openModal('Phùng Gia Huy','Thành viên','Sáng tạo','Năng động')"><div class="avatar"></div><strong>Phùng Gia Huy</strong><span>Thành viên</span></div>
+    <div class="member" onclick="openModal('Hoàng Thị Thùy Linh','Thành viên','Ổn định','Hợp tác')"><div class="avatar"></div><strong>Hoàng Thị Thùy Linh</strong><span>Thành viên</span></div>
+    <div class="member" onclick="openModal('Nông Nguyễn Thành Tâm','Thành viên','Tinh thần tốt','Nhiệt huyết')"><div class="avatar"></div><strong>Nông Nguyễn Thành Tâm</strong><span>Thành viên</span></div>
+    <div class="member" onclick="openModal('Hoàng Quỳnh Anh','Thành viên','Chăm học','Tỉ mỉ')"><div class="avatar"></div><strong>Hoàng Quỳnh Anh</strong><span>Thành viên</span></div>
+    <div class="member" onclick="openModal('Hoàng Đức Lương','Thành viên','Kỷ luật','Ổn định')"><div class="avatar"></div><strong>Hoàng Đức Lương</strong><span>Thành viên</span></div>
+    <div class="member" onclick="openModal('Lâm Nguyễn Huyền Trang','Thành viên','Hòa đồng','Giao tiếp tốt')"><div class="avatar"></div><strong>Lâm Nguyễn Huyền Trang</strong><span>Thành viên</span></div>
+    <div class="member" onclick="openModal('Lăng Thị Thu Hiếu','Thành viên','Tinh thần tốt','Hợp tác')"><div class="avatar"></div><strong>Lăng Thị Thu Hiếu</strong><span>Thành viên</span></div>
+  </div>
+</section>
+
+<footer>© 2026 Tổ 4 – 10A7 | THPT Bình Gia</footer>
+
+<div id="modal">
+  <div class="box">
+    <h3 id="mName"></h3>
+    <p><strong>Chức vụ:</strong> <span id="mRole"></span></p>
+    <p><strong>Thành tích:</strong> <span id="mAch"></span></p>
+    <p><strong>Ưu điểm:</strong> <span id="mAdv"></span></p>
+    <button onclick="modal.style.display='none'">Đóng</button>
+  </div>
+</div>
+
+<script>
+/* ===== AI MEMORY ===== */
+let memberPriority = JSON.parse(localStorage.getItem("memberPriority")) || {};
+
+/* ===== STARS ===== */
+const c=document.getElementById('stars'),ctx=c.getContext('2d');
+function resize(){c.width=innerWidth;c.height=innerHeight}
+resize();addEventListener('resize',resize);
+let stars=Array.from({length:260},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.4}));
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle='#7dd3ff';
+  stars.forEach(s=>{
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fill();
+    s.y+=0.3;if(s.y>c.height)s.y=0;
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+
+/* ===== INTRO ===== */
+const lines=[
+ "Xin chào. Tôi là AI điều phối Tổ 4.",
+ "Đang khởi tạo hệ thống lớp 10A7...",
+ "Truy cập thành công. Chào mừng bạn."
+];
+let i=0,j=0;
+(function speak(){
+  if(i<lines.length){
+    if(j<lines[i].length){
+      robotTalk.innerHTML+=lines[i][j++];setTimeout(speak,45);
+    }else{
+      robotTalk.innerHTML+="<br>";j=0;i++;setTimeout(speak,600);
+    }
+  }else setTimeout(()=>intro.classList.add('hidden'),1000);
+})();
+
+/* ===== TYPING ===== */
+const text="Học tập theo tư duy công nghệ – hiện đại – kỷ luật";
+let index=0,del=false;
+(function typing(){
+  typingText.innerHTML=text.slice(0,index);
+  if(!del) index++; else index--;
+  if(index===text.length+10) del=true;
+  if(index===0) del=false;
+  setTimeout(typing,del?40:70);
+})();
+
+/* ===== REVEAL ===== */
+const reveals=document.querySelectorAll('.reveal');
+addEventListener('scroll',()=>reveals.forEach(r=>{
+  if(r.getBoundingClientRect().top<innerHeight-120) r.classList.add('active');
+}));
+
+/* ===== MODAL + AI RANK ===== */
+function openModal(n,r,a,d){
+  modal.style.display='flex';
+  mName.innerText=n;
+  mRole.innerText=r;
+  mAch.innerText=a;
+  mAdv.innerText=d;
+  memberPriority[n]=(memberPriority[n]||0)+1;
+  localStorage.setItem("memberPriority",JSON.stringify(memberPriority));
+  updateRanking();
+}
+function updateRanking(){
+  const members=[...document.querySelectorAll(".member")];
+  members.forEach(m=>{
+    const name=m.querySelector("strong").innerText;
+    m.dataset.score=memberPriority[name]||0;
+    m.classList.remove("top1-glow");
+    m.querySelectorAll(".rank-badge").forEach(b=>b.remove());
+  });
+  members.sort((a,b)=>b.dataset.score-a.dataset.score);
+  members.slice(0,3).forEach((m,i)=>{
+    const badge=document.createElement("div");
+    badge.className="rank-badge "+["top1","top2","top3"][i];
+    badge.innerText=["🥇 TOP 1","🥈 TOP 2","🥉 TOP 3"][i];
+    if(i===0) m.classList.add("top1-glow");
+    m.appendChild(badge);
+  });
+  members.forEach(m=>{
+    if(m.dataset.score>=5){
+      const star=document.createElement("div");
+      star.className="rank-badge star";
+      star.innerText="⭐ NỔI BẬT";
+      m.appendChild(star);
+    }
+  });
+}
+updateRanking();
+
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+</script>
+
+</body>
+</html>
