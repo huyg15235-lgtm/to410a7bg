@@ -334,7 +334,7 @@ const reveals=document.querySelectorAll('.reveal');
 addEventListener('scroll',()=>reveals.forEach(r=>{
   if(r.getBoundingClientRect().top<innerHeight-120) r.classList.add('active');
 }));
-
+<script>
 /* ===== MODAL + AI RANK ===== */
 function openModal(n,r,a,d){
   modal.style.display='flex';
@@ -346,6 +346,7 @@ function openModal(n,r,a,d){
   localStorage.setItem("memberPriority",JSON.stringify(memberPriority));
   updateRanking();
 }
+
 function updateRanking(){
   const members=[...document.querySelectorAll(".member")];
   members.forEach(m=>{
@@ -373,9 +374,11 @@ function updateRanking(){
 }
 updateRanking();
 
-function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
-</script>
-  /* ===== AI SEARCH (FIXED) ===== */
+function go(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+/* ===== AI SEARCH (FIXED & WORKING) ===== */
 function aiSearch(){
   const input = document.getElementById("searchInput");
   const keyword = input.value.toLowerCase().trim();
@@ -384,7 +387,6 @@ function aiSearch(){
 
   members.forEach(m=>{
     const content = m.innerText.toLowerCase();
-
     if(keyword === "" || content.includes(keyword)){
       m.style.display = "block";
       count++;
@@ -402,6 +404,5 @@ function aiSearch(){
     result.innerText = "AI không tìm thấy kết quả phù hợp";
   }
 }
+</script>
 
-</body>
-</html>
