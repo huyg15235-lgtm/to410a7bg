@@ -344,49 +344,4 @@ addEventListener('scroll',()=>{
   });
 });
 
-/* ===== MODAL + AI RANK ===== */
-function openModal(n,r,a,d){
-  modal.style.display='flex';
-  mName.innerText=n;
-  mRole.innerText=r;
-  mAch.innerText=a;
-  mAdv.innerText=d;
-  memberPriority[n]=(memberPriority[n]||0)+1;
-  localStorage.setItem("memberPriority",JSON.stringify(memberPriority));
-  updateRanking();
-}
-
-function updateRanking(){
-  const members=[...document.querySelectorAll(".member")];
-  members.forEach(m=>{
-    const name=m.querySelector("strong").innerText;
-    m.dataset.score=memberPriority[name]||0;
-    m.classList.remove("top1-glow");
-    m.querySelectorAll(".rank-badge").forEach(b=>b.remove());
-  });
-  members.sort((a,b)=>b.dataset.score-a.dataset.score);
-  members.slice(0,3).forEach((m,i)=>{
-    const badge=document.createElement("div");
-    badge.className="rank-badge "+["top1","top2","top3"][i];
-    badge.innerText=["🥇 TOP 1","🥈 TOP 2","🥉 TOP 3"][i];
-    if(i===0) m.classList.add("top1-glow");
-    m.appendChild(badge);
-  });
-}
-updateRanking();
-
-/* ===== AI SUGGEST ===== */
-function aiSuggest(){
-  const members=[...document.querySelectorAll(".member")];
-  members.forEach(m=>m.style.display="none");
-  const pick=members[Math.floor(Math.random()*members.length)];
-  pick.style.display="block";
-  pick.scrollIntoView({behavior:"smooth",block:"center"});
-  document.getElementById("aiResult").innerText =
-    "AI đề xuất: " + pick.querySelector("strong").innerText;
-}
-
-function go(id){
-  document.getElementById(id).scrollIntoView({behavior:'smooth'});
-}
 </script>
